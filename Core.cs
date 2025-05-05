@@ -1,4 +1,5 @@
-﻿using MelonLoader;
+﻿using Il2CppSystem.ComponentModel;
+using MelonLoader;
 using MelonLoader.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -97,20 +98,15 @@ namespace ActualPlates
                 if (original == null || original.name != targetName) continue;
 
                 // Avoid replacing it more than once
-                if (original.GetComponent<SpriteMask>() == null) continue;
+                if (original.GetComponent<MeshFilter>().mesh == replacement.transform.GetChild(0).GetComponent<MeshFilter>().mesh) continue;
 
                 GameObject newObj = GameObject.Instantiate(replacement, original.transform.position, original.transform.rotation);
                 newObj.transform.SetParent(original.transform.parent);
-                newObj.name = original.name;
-
-                // Optional: Copy over transform/scale/etc.
-                newObj.transform.localScale = original.transform.localScale;
-                newObj.transform.rotation = original.transform.rotation;
-                newObj.transform.position = original.transform.position;
                 original.GetComponent<MeshFilter>().mesh = newObj.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
-                original.AddComponent<UnityEngine.SpriteMask>();
                 GameObject.Destroy(newObj);
+                //original.name = original.name+"-";
             }
         }
     }
+    
 }
