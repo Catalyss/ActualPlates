@@ -104,6 +104,7 @@ namespace ActualPlates
                 newObj.transform.SetParent(original.transform.parent);
                 original.GetComponent<MeshFilter>().mesh = newObj.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
                 GameObject.Destroy(newObj);
+                original.transform.localEulerAngles = original.transform.localEulerAngles + new Vector3(0,1,0);
                 //original.name = original.name+"-";
             }
         }
