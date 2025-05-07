@@ -81,8 +81,21 @@ namespace ActualPlates
                 var launcher = GameObject.Find("PlateLauncherPlate");
                 var Plate = GameObject.Find("Plate");
 
-                if (launcher != null)   ReplaceAll("PlateLauncherPlate", replacementPlate);
-                if (Plate != null)      ReplaceAll("Plate", replacementPlate);
+                if (launcher != null) ReplaceAll("PlateLauncherPlate", replacementPlate);
+                if (Plate != null) ReplaceAll("Plate", replacementPlate);
+            }
+
+            System.Collections.Generic.IEnumerable<UnityEngine.GameObject> originals = GameObject.FindObjectsOfType<GameObject>().Where(obj => obj.name == "PlateLauncherPlate");
+            foreach (var original in originals)
+            {
+                if (original == null || original.name != "PlateLauncherPlate") continue;
+                original.transform.localEulerAngles = original.transform.localEulerAngles + new Vector3(0, 8, 0);
+            }
+            System.Collections.Generic.IEnumerable<UnityEngine.GameObject> originalss = GameObject.FindObjectsOfType<GameObject>().Where(obj => obj.name == "Plate");
+            foreach (var original in originalss)
+            {
+                if (original == null || original.name != "Plate") continue;
+                original.transform.localEulerAngles = original.transform.localEulerAngles + new Vector3(0, 8, 0);
             }
         }
 
@@ -95,6 +108,7 @@ namespace ActualPlates
 
             foreach (var original in originals)
             {
+
                 if (original == null || original.name != targetName) continue;
 
                 // Avoid replacing it more than once
@@ -103,11 +117,12 @@ namespace ActualPlates
                 GameObject newObj = GameObject.Instantiate(replacement, original.transform.position, original.transform.rotation);
                 newObj.transform.SetParent(original.transform.parent);
                 original.GetComponent<MeshFilter>().mesh = newObj.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
+                original.GetComponent<MeshRenderer>().material.mainTexture = newObj.transform.GetChild(0).GetComponent<MeshRenderer>().material.mainTexture;
                 GameObject.Destroy(newObj);
-                original.transform.localEulerAngles = original.transform.localEulerAngles + new Vector3(0,1,0);
+
                 //original.name = original.name+"-";
             }
         }
     }
-    
+
 }
